@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  miniflux-db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=killer_google
+      - POSTGRES_PASSWORD=reader_secret_pass
+      - POSTGRES_DB=miniflux
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  killer-reader:
+    image: miniflux/miniflux:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - miniflux-db
+    environment:
+      - DATABASE_URL=postgres://killer_google:reader_secret_pass@miniflux-db:5432/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password123
+    restart: unless-stopped
+
+volumes:
+  pgdata:
