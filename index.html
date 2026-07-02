@@ -176,8 +176,9 @@
 
     <script>
         function loginWithGitHub() {
-            alert("🚀 Redirecting to GitHub OAuth for authorization...");
-            window.location.href = "https://github.com";
+            const clientId = "여기에_발급받은_CLIENT_ID_입력";
+            const redirectUri = "http://localhost:3000/auth/github/callback";
+            window.location.href = `https://github.com{clientId}&redirect_uri=${redirectUri}&scope=user`;
         }
     </script>
 </body>
